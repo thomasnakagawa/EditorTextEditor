@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
 namespace EditorTextEditor
 {
-    public class TextEditor : EditorWindow
+    public class TextEditorWindow : EditorWindow
     {
-        // tabs
+        // Tabs
         private List<FileTab> OpenTabs = new List<FileTab>();
         private FileTab CurrentTab;
 
@@ -15,40 +15,42 @@ namespace EditorTextEditor
         Vector2 textViewScrollPosition = Vector2.zero;
         Vector2 tabsViewScrollPosition = Vector2.zero;
 
-
         public void SelectTab(FileTab fileTab)
         {
             CurrentTab = fileTab;
-            GUI.FocusControl(null); // remove focus so the textarea updates with the new file
+            GUI.FocusControl(null); // remove focus so the textarea updates with the new file content
         }
 
         public void OnGUI()
         {
+            //GUIStyle fileButtonStyle = new GUIStyle();
+            //fileButtonStyle.
+
             // file buttons
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("New file"))
+            if (GUILayout.Button("New file", EditorStyles.miniButtonMid))
             {
                 var newTab = new FileTab(this);
                 OpenTabs.Add(newTab);
                 SelectTab(newTab);
             }
-            if (GUILayout.Button("Open"))
+            if (GUILayout.Button("Open", EditorStyles.miniButtonMid))
             {
                 OpenFile(EditorUtility.OpenFilePanel("Open text file", "", ""));
             }
 
             EditorGUI.BeginDisabledGroup(CurrentTab == null);
-            if (GUILayout.Button("Save"))
+            if (GUILayout.Button("Save", EditorStyles.miniButtonMid))
             {
                 SaveFile(CurrentTab.filePath, CurrentTab.currentTextContent);
             }
-            if (GUILayout.Button("Close"))
+            if (GUILayout.Button("Close", EditorStyles.miniButtonMid))
             {
                 CloseCurrent();
             }
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndHorizontal();
-
+            
             // tabs area
             Color originalBackgroundColor = GUI.backgroundColor;
             tabsViewScrollPosition = GUILayout.BeginScrollView(tabsViewScrollPosition, false, false, GUIStyle.none, GUIStyle.none, GUILayout.ExpandHeight(false));
